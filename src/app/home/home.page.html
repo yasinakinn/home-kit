@@ -1,48 +1,118 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="first-toolbar" color="primary" mode="ios">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Home
+      Control Panel
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon text-medium slot="icon-only" name="notifications"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar class="second-toolbar" color="primary" mode="ios">
+    <ion-grid>
+      <ion-row class="ion-align-items-center negative-margin">
+        <ion-col text-center col-4>
+          <img src="{{weatherImg}}" alt="">
+        </ion-col>
+        <ion-col text-center col-4>
+          <p text-medium no-margin>{{temperatureOutside}}°ᶜ</p>
+        </ion-col>
+        <ion-col text-center col-4>
+          <p text-medium no-margin>{{temperatureIndoor}}°ᶜ</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="negative-margin">
+        <ion-col text-center col-4>
+          <p text-small no-margin>{{descriptions}}</p>
+        </ion-col>
+        <ion-col text-center col-4>
+          <p text-small no-margin>Temp Outside</p>
+        </ion-col>
+        <ion-col text-center col-4>
+          <p text-small no-margin>Temp Indoor</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
+<ion-content color="light">
+  <ion-list no-padding class="grid-content">
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col col-12>
+          <ion-card color="shade" class="usageCard" mode="ios">
+            <ion-row>
+              <ion-col col-6>
+                <ion-item lines="none" color="shade">
+                  <ion-icon name="outlet" slot="start"></ion-icon>
+                  <ion-label>
+                    Icon Start
+                    <p>asd</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col col-6>
+                <ion-item lines="none" color="shade">
+                  <ion-icon name="flash" slot="start"></ion-icon>
+                  <ion-label>
+                    Icon Start
+                    <p>asd</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-card no-margin color="tint" class="homeCard" mode="ios">
+        <ion-card-header class="scenesHeader" mode="md" margin>
+          <ion-card-title mode="md">Scenes</ion-card-title>
+        </ion-card-header>
+        <ion-slides [options]="scenesSlideOpts">
+          <ion-slide *ngFor="let scene  of  scenes">
+            <ion-card mode="ios" class="sceneCard ion-activatable" no-margin text-center>
+              <ion-card-content>
+                <ion-icon text-medium name="{{scene.icon}}"></ion-icon>
+                <ion-card-header mode="md" no-padding>
+                  <ion-card-subtitle mode="md">{{scene.title}}</ion-card-subtitle>
+                </ion-card-header>
+              </ion-card-content>
+              <ion-ripple-effect></ion-ripple-effect>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
 
-<ion-content>
-  <ion-card class="welcome-card">
-    <img src="/assets/shapes.svg" alt=""/>
-    <ion-card-header>
-      <ion-card-subtitle>Get Started</ion-card-subtitle>
-      <ion-card-title>Welcome to Ionic</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>
-        Now that your app has been created, you'll want to start building out features
-        and components. Check out some of the resources below for next steps.
-      </p>
-    </ion-card-content>
-  </ion-card>
+        <ion-card-header class="roomsHeader" margin>
+          <ion-card-title mode="md">Rooms
+          </ion-card-title>
+          <div class=" ion-activatable">
+              <ion-icon name="add" class="plus" (click)="addRooms()"></ion-icon>
+              <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </ion-card-header>
+        <ion-slides *ngIf="isEmpty" [options]="roomsSlideOpts">
+          <ion-slide *ngFor="let room  of  rooms">
+            <ion-card mode="ios" class="roomCard ion-activatable"  no-margin text-center>
+              <ion-card-content (click)="openRoom(room.id,$event)">
+                <img height="100" src="{{room.image}}" />
+                <ion-card-header mode="md">
+                  <ion-card-title mode="md">{{room.name}}</ion-card-title>
+                  <ion-card-subtitle mode="md">{{room.name}}</ion-card-subtitle>
+                </ion-card-header>
+              </ion-card-content>
+              <ion-ripple-effect></ion-ripple-effect>
+            </ion-card>
 
-  <ion-list lines="none">
-    <ion-list-header>
-      <ion-label>Resources</ion-label>
-    </ion-list-header>
-    <ion-item href="https://ionicframework.com/docs/">
-      <ion-icon slot="start" color="medium" name="book"></ion-icon>
-      <ion-label>Ionic Documentation</ion-label>
-    </ion-item>
-    <ion-item href="https://ionicframework.com/docs/building/scaffolding">
-      <ion-icon slot="start" color="medium" name="build"></ion-icon>
-      <ion-label>Scaffold Out Your App</ion-label>
-    </ion-item>
-    <ion-item href="https://ionicframework.com/docs/layout/structure">
-      <ion-icon slot="start" color="medium" name="grid"></ion-icon>
-      <ion-label>Change Your App Layout</ion-label>
-    </ion-item>
-    <ion-item href="https://ionicframework.com/docs/theming/basics">
-      <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
-      <ion-label>Theme Your App</ion-label>
-    </ion-item>
+          </ion-slide>
+        </ion-slides>
+        <ion-card-content *ngIf="!isEmpty">
+            <p>asdas</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-grid>
   </ion-list>
 </ion-content>

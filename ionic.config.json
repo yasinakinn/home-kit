@@ -1,5 +1,7 @@
 {
   "name": "home-kit",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

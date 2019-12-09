@@ -33,7 +33,11 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      if (this.platform.is("ios")) {
+        this.statusBar.styleDefault();
+      } else {
+        this.statusBar.styleBlackTranslucent();
+      }
       this.splashScreen.hide();
     });
   }

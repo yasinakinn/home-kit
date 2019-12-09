@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar class="first-toolbar" color="primary" mode="ios">
+    <ion-title>{{room.name}}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar class="second-toolbar" color="primary" mode="ios">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12>
+          <ion-card color="tertiary" class="usageCard" mode="ios">
+            <ion-row *ngIf="isSensorsEmpty">
+              <ion-col col-6>
+                <ion-item lines="none" color="shade">
+                  <ion-icon name="outlet" slot="start"></ion-icon>
+                  <ion-label>
+                    Icon Start
+                    <p>asd</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col col-6>
+                <ion-item lines="none" color="shade">
+                  <ion-icon name="flash" slot="start"></ion-icon>
+                  <ion-label>
+                    Icon Start
+                    <p>asd</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-card-content *ngIf="!isSensorsEmpty">
+                <p>asdas</p>
+              </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="light">
+  <ion-list no-padding class="grid-content">
+    <ion-grid no-padding>
+      <ion-card no-margin color="tint" class="homeCard" mode="ios">
+        <ion-card-header class="devicesHeader" margin>
+          <ion-card-title mode="md">Devices
+          </ion-card-title>
+          <div class=" ion-activatable">
+            <ion-icon name="add" class="plus" (click)="addDevices()"></ion-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </ion-card-header>
+
+        <ion-row *ngIf="isDevicesEmpty">
+          <ion-col col-6 *ngFor="let device  of  devices">
+              <ion-card mode="ios" class="deviceCard ion-activatable" no-margin>
+                  <ion-card-content>
+                    <ion-card-header mode="md">
+                        <ion-icon name="{{device.deviceImage}}"></ion-icon>
+                      <ion-card-title mode="md">{{device.deviceName}}</ion-card-title>
+                      <ion-toggle *ngIf="device.deviceType == 'switch'" [(ngModel)]="device[deviceId]" (ionChange)="toggleChange(device[deviceId])"></ion-toggle>
+                    </ion-card-header>
+                  </ion-card-content>
+                  <ion-ripple-effect></ion-ripple-effect>
+                </ion-card>
+          </ion-col>
+        </ion-row>
+
+        <ion-card-content *ngIf="!isDevicesEmpty">
+          <p class="noDevices">asdas</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-grid>
+  </ion-list>
+</ion-content>

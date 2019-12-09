@@ -8,18 +8,33 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { HttpClientModule } from '@angular/common/http';
+import { IonicStorageModule } from '@ionic/storage';
+import { ListPageModule } from './list/list.module';
+import { AddRoomPageModule } from './add-room/add-room.module';
+import { RoomPageModule } from './room/room.module';
+import { AddDevicePageModule } from './add-device/add-device.module';
+import { MqttDirective } from './mqtt.directive';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, MqttDirective],
   entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    IonicStorageModule.forRoot(),
+    AppRoutingModule,
+    HttpClientModule,
+    ListPageModule,
+    RoomPageModule,
+    AddRoomPageModule,
+    AddDevicePageModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

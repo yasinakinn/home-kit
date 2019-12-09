@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add Room</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked">Room Name</ion-label>
+    <ion-input required="true" placeholder="Please enter your room name" name="text"  [(ngModel)]="roomName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Room Type</ion-label>
+    <ion-select placeholder="Please select room type" [(ngModel)]="roomType" okText="Okay" cancelText="Dismiss"
+      interface="popover" (ionChange)="typeChange($event)">
+      <ion-select-option value="office">Office</ion-select-option>
+      <ion-select-option value="bed">Bedroom</ion-select-option>
+      <ion-select-option value="kitchen">Kitchen</ion-select-option>
+      <ion-select-option value="living">Living Room</ion-select-option>
+      <ion-select-option value="child">Child Room</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-button shape="round" expand="block" (click)="addRoom()">Add</ion-button>
+</ion-content>
