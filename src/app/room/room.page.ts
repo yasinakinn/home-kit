@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, ModalController } from '@ionic/angular';
 import { AddDevicePage } from '../add-device/add-device.page';
 import { Storage } from '@ionic/storage';
-import { MqttDirective } from '../mqtt.directive';
-
 @Component({
   selector: 'app-room',
   templateUrl: './room.page.html',
@@ -16,8 +14,7 @@ export class RoomPage implements OnInit {
   constructor(
     public navParams: NavParams,
     private storage: Storage,
-    public modalCtrl: ModalController,
-    public mqtt:MqttDirective
+    public modalCtrl: ModalController
   ) {
     this.room = navParams.get('roomData');
 

@@ -72,7 +72,6 @@ export class HomePage implements OnInit {
   ngOnInit(){
     this.getWeather();
     this.getRooms();
-    this.storage.clear()
   }
 
 

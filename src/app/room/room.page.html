@@ -42,10 +42,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content color="light">
-  <ion-list no-padding class="grid-content">
-    <ion-grid no-padding>
-      <ion-card no-margin color="tint" class="homeCard" mode="ios">
-        <ion-card-header class="devicesHeader" margin>
+  <ion-list class="grid-content ion-no-padding">
+    <ion-grid class="ion-no-padding">
+      <ion-card color="tint" class="homeCard ion-no-margin " mode="ios">
+        <ion-card-header class="devicesHeader ion-margin">
           <ion-card-title mode="md">Devices
           </ion-card-title>
           <div class=" ion-activatable">
@@ -56,7 +56,7 @@
 
         <ion-row *ngIf="isDevicesEmpty">
           <ion-col col-6 *ngFor="let device  of  devices">
-              <ion-card mode="ios" class="deviceCard ion-activatable" no-margin>
+              <ion-card mode="ios" class="deviceCard ion-activatable ion-no-margin">
                   <ion-card-content>
                     <ion-card-header mode="md">
                         <ion-icon name="{{device.deviceImage}}"></ion-icon>
