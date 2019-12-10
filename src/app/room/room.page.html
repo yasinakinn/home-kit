@@ -54,14 +54,15 @@
           </div>
         </ion-card-header>
 
-        <ion-row *ngIf="isDevicesEmpty">
-          <ion-col col-6 *ngFor="let device  of  devices">
+        <ion-row class="ion-align-items-stretch" *ngIf="isDevicesEmpty">
+          <ion-col size="6" size-sm size-md size-lg size-xl *ngFor="let device  of  devices" (click)="presentAlertPrompt(device)">
               <ion-card mode="ios" class="deviceCard ion-activatable ion-no-margin">
                   <ion-card-content>
                     <ion-card-header mode="md">
                         <ion-icon name="{{device.deviceImage}}"></ion-icon>
                       <ion-card-title mode="md">{{device.deviceName}}</ion-card-title>
-                      <ion-toggle *ngIf="device.deviceType == 'switch'" [(ngModel)]="device[deviceId]" (ionChange)="toggleChange(device[deviceId])"></ion-toggle>
+                      <ion-toggle *ngIf="device.deviceType == 'switch'" [(ngModel)]="device[deviceId]" (ionChange)="toggleChange(device[deviceId],device)"></ion-toggle>
+                      <ion-card-subtitle *ngIf="device.deviceType == 'text'" id="{{device.deviceTopic}}">Accessing</ion-card-subtitle>
                     </ion-card-header>
                   </ion-card-content>
                   <ion-ripple-effect></ion-ripple-effect>

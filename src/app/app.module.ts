@@ -15,6 +15,7 @@ import { ListPageModule } from './list/list.module';
 import { AddRoomPageModule } from './add-room/add-room.module';
 import { RoomPageModule } from './room/room.module';
 import { AddDevicePageModule } from './add-device/add-device.module';
+import { ControllerService } from './services/controller.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +35,7 @@ import { AddDevicePageModule } from './add-device/add-device.module';
     StatusBar,
     SplashScreen,
     Geolocation,
+    ControllerService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

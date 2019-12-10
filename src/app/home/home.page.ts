@@ -1,7 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HttpClient } from '@angular/common/http';
-import { Paho } from 'ng2-mqtt/mqttws31';
 import { Storage } from '@ionic/storage';
 import { ModalController } from '@ionic/angular';
 import { AddRoomPage } from '../add-room/add-room.page';
@@ -14,20 +13,15 @@ import { RoomPage } from '../room/room.page';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  mqtt;
-  reconnectTimeout = 2000;
-  host = "3.123.138.65"
-  port = 9001;
-  public client: Paho.MQTT.Client;
 
   temperatureOutside;
   descriptions;
-  temperatureIndoor:any;
-  humidityIndoor;
+  humidityOutside;
   weatherImg;
 
   scenes;
   rooms =[];
+  devicesLength;
   isEmpty: boolean;
   scenesSlideOpts = {
     slidesPerView: 4,
@@ -63,8 +57,20 @@ export class HomePage implements OnInit {
         title: "Get Up"
       },
     ];
-    this.MQTT().connect({ onSuccess: this.onConnected.bind(this), onFailure: this.onFail.bind(this) });
-    this.temperatureIndoor = "~";
+    if (window.screen.width <= 360) {
+      this.scenesSlideOpts = {
+        slidesPerView: 2,
+        spaceBetween: 0,
+        speed: 400
+      };
+      this.roomsSlideOpts = {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        speed: 400,
+      };
+    }
+
+    this.humidityOutside = "~";
     this.temperatureOutside ="~";
     this.weatherImg = "/assets/sun.svg"
   }
@@ -82,6 +88,7 @@ export class HomePage implements OnInit {
         console.log(resa);
         
         this.temperatureOutside = resa["current"].temperature;
+        this.humidityOutside = resa["current"].humidity;
         this.descriptions = resa["current"].weather_descriptions[0];
         let iconClass;
         switch (this.descriptions) {
@@ -144,55 +151,19 @@ export class HomePage implements OnInit {
         this.storage.get("rooms").then((val) => {
           this.rooms = val;
         });
+        if (this.rooms.length == 1) {
+          this.roomsSlideOpts = {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            speed: 400,
+          };
+        }
       }else{
         this.isEmpty = false;
       }
     });
   }
 
-  MQTT() {
-    this.client = new Paho.MQTT.Client(this.host, this.port, "homeKit" + Math.floor(Math.random() * 9000) + 1000);
-    this.client.onMessageArrived = this.onMessageArrived.bind(this);
-    this.client.onConnectionLost = this.onConnectionLost.bind(this);
-    return this.client;
-  }
-
-  onConnectionLost(responseObject) {
-    console.log("Connection lost, trying reconnect");
-    if (this.client.isConnected() == false) {
-      this.MQTT().connect({ onSuccess: this.onConnected.bind(this), onFailure: this.onFail.bind(this) });
-
-    }
-  }
-
-  onConnected() {
-    console.log("Connected as " + this.client["clientId"] + " to " + this.host);
-    this.client.subscribe("ofis/sicaklik", 0);
-    this.client.subscribe("ofis/nem", 0);
-  }
-
-  onFail() {
-    if (this.client.isConnected() == false) {
-      this.MQTT().connect({ onSuccess: this.onConnected.bind(this), onFailure: this.onFail.bind(this) });
-    }
-  }
-
-  onMessageArrived(message) {
-    switch (message.destinationName) {
-      case "ofis/sicaklik":
-        this.temperatureIndoor = message.payloadString;
-        this.temperatureIndoor = parseFloat(this.temperatureIndoor).toFixed(1);
-        break;
-      case "ofis/nem":
-        this.humidityIndoor = message.payloadString;
-        this.humidityIndoor = parseFloat(this.humidityIndoor).toFixed(1);
-        
-        break;
-
-      default:
-        break;
-    }
-  }
 
   async addRooms() {
     const modal = await this.modalCtrl.create({

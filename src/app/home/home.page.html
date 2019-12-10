@@ -22,7 +22,7 @@
           <p text-medium class="ion-no-margin">{{temperatureOutside}}°ᶜ</p>
         </ion-col>
         <ion-col class="ion-text-center" col-4>
-          <p text-medium class="ion-no-margin">{{temperatureIndoor}}°ᶜ</p>
+          <p text-medium class="ion-no-margin">{{humidityOutside}}%</p>
         </ion-col>
       </ion-row>
       <ion-row class="negative-margin">
@@ -33,7 +33,7 @@
           <p text-small class="ion-no-margin">Temp Outside</p>
         </ion-col>
         <ion-col class="ion-text-center" col-4>
-          <p text-small class="ion-no-margin">Temp Indoor</p>
+          <p text-small class="ion-no-margin">Humidity Outside</p>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -101,7 +101,7 @@
                 <img height="100" src="{{room.image}}" />
                 <ion-card-header mode="md">
                   <ion-card-title mode="md">{{room.name}}</ion-card-title>
-                  <ion-card-subtitle mode="md">{{room.name}}</ion-card-subtitle>
+                  <ion-card-subtitle mode="md">{{room.devices.length}} Devices</ion-card-subtitle>
                 </ion-card-header>
               </ion-card-content>
               <ion-ripple-effect></ion-ripple-effect>
