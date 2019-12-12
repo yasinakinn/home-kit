@@ -14,60 +14,28 @@
   </ion-toolbar>
   <ion-toolbar class="second-toolbar" color="primary" mode="ios">
     <ion-grid>
-      <ion-row class="ion-align-items-center negative-margin">
-        <ion-col class="ion-text-center" col-4>
-          <img src="{{weatherImg}}" alt="">
-        </ion-col>
-        <ion-col class="ion-text-center" col-4>
-          <p text-medium class="ion-no-margin">{{temperatureOutside}}°ᶜ</p>
-        </ion-col>
-        <ion-col class="ion-text-center" col-4>
-          <p text-medium class="ion-no-margin">{{humidityOutside}}%</p>
-        </ion-col>
-      </ion-row>
-      <ion-row class="negative-margin">
-        <ion-col class="ion-text-center" col-4>
-          <p text-small class="ion-no-margin">{{descriptions}}</p>
-        </ion-col>
-        <ion-col class="ion-text-center" col-4>
-          <p text-small class="ion-no-margin">Temp Outside</p>
-        </ion-col>
-        <ion-col class="ion-text-center" col-4>
-          <p text-small class="ion-no-margin">Humidity Outside</p>
-        </ion-col>
-      </ion-row>
+        <ion-row *ngIf="!isWidgetEmpty">
+            <ion-col col-6 *ngFor="let widget of  widgets">
+              <ion-item lines="none" class="ion-text-center ion-activatable widget" (click)="presentAlertConfirm(widget)" color="shade">
+                <ion-label>
+                  <span id="{{widget.value}}">{{widgetValue}}</span>
+                  <p>{{widget.name}}</p>
+                </ion-label>
+                <ion-ripple-effect></ion-ripple-effect>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="isWidgetEmpty">
+            <ion-col col-12 class="ion-text-center">
+              <p>No widgets added yet</p>
+            </ion-col>
+          </ion-row>
     </ion-grid>
   </ion-toolbar>
 </ion-header>
 <ion-content color="light">
   <ion-list  class="grid-content ion-no-padding">
     <ion-grid class="ion-no-padding">
-      <ion-row>
-        <ion-col col-12>
-          <ion-card color="shade" class="usageCard" mode="ios">
-            <ion-row>
-              <ion-col col-6>
-                <ion-item lines="none" color="shade">
-                  <ion-icon name="outlet" slot="start"></ion-icon>
-                  <ion-label>
-                    Icon Start
-                    <p>asd</p>
-                  </ion-label>
-                </ion-item>
-              </ion-col>
-              <ion-col col-6>
-                <ion-item lines="none" color="shade">
-                  <ion-icon name="flash" slot="start"></ion-icon>
-                  <ion-label>
-                    Icon Start
-                    <p>asd</p>
-                  </ion-label>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-          </ion-card>
-        </ion-col>
-      </ion-row>
       <ion-card  color="tint" class="homeCard ion-no-margin" mode="ios">
         <ion-card-header class="scenesHeader ion-margin" mode="md">
           <ion-card-title mode="md">Scenes</ion-card-title>
@@ -110,7 +78,7 @@
           </ion-slide>
         </ion-slides>
         <ion-card-content *ngIf="!isEmpty">
-            <p>asdas</p>
+            <p class="ion-text-center">No rooms added yet</p>
         </ion-card-content>
       </ion-card>
     </ion-grid>

@@ -21,6 +21,8 @@ export class AddDevicePage implements OnInit {
   postfix;
   prefix;
   precision;
+
+  isWidget: boolean = false;
   constructor(
     public modalCtrl: ModalController,
     public navParams: NavParams,
@@ -45,16 +47,34 @@ export class AddDevicePage implements OnInit {
         this.deviceImage = "text"
         this.isSensor = false;
         this.isSwitch = false;
+
+
         break;
       case "switch":
         this.deviceImage = "switch"
+        this.isText = false;
         this.isSensor = false;
         this.isSwitch = true;
         break;
       case "sensor":
         this.deviceImage = "eye"
+        this.isText = false;
         this.isSensor = true;
         this.isSwitch = false;
+        this.storage.get("widgets").then((val) => {
+          if (val) {
+            if (val.length > 3) {
+
+              this.isText = false;
+            } else {
+  
+              this.isText = true;
+            }
+          }else{
+            this.isText = true;
+          }
+
+        })
         break;
 
       default:
@@ -72,8 +92,6 @@ export class AddDevicePage implements OnInit {
 
   addDevice() {
     let id = this.generateHexString(10);
-    console.log(id);
-    
     if (this.deviceName && this.deviceType && this.topic) {
       this.storage.get("rooms").then((val) => {
         val.forEach((element, i) => {
@@ -84,7 +102,7 @@ export class AddDevicePage implements OnInit {
                 deviceType: this.deviceType,
                 deviceTopic: this.topic,
                 deviceImage: this.deviceImage,
-                deviceId:id,
+                deviceId: id,
                 onEvent: this.onEvent,
                 offEvent: this.offEvent,
                 prefix: this.prefix,
@@ -94,10 +112,33 @@ export class AddDevicePage implements OnInit {
             )
           }
         });
-        console.log(val);
-
         this.storage.set("rooms", val);
       });
+      if (this.isWidget == true) {
+        this.storage.get("widgets").then((val) => {
+          if (val) {
+            val.push({
+              id:this.generateHexString(10),
+              name: this.deviceName,
+              value: this.topic,
+              prefix: this.prefix,
+              postfix: this.postfix,
+              precision: this.precision
+            })
+            this.storage.set("widgets", val)
+          } else {
+            let widget = [{
+              id:this.generateHexString(10),
+              name: this.deviceName,
+              value: this.topic,
+              prefix: this.prefix,
+              postfix: this.postfix,
+              precision: this.precision
+            }]
+            this.storage.set("widgets", widget)
+          }
+        })
+      }
       setTimeout(() => {
         this.dismiss()
       }, 100);
@@ -105,6 +146,10 @@ export class AddDevicePage implements OnInit {
       console.log("asda");
 
     }
+
+  }
+
+  setWidget() {
 
   }
 

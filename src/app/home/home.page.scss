@@ -36,7 +36,7 @@ ion-header{
   z-index: 999;
   display: block;
   position: relative;
-  transform: translateY(192px);
+  transform: translateY(182px);
   background: #fff;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -63,6 +63,11 @@ ion-header{
 .scenesHeader{
   margin-bottom: 0;
   margin-left: 0;
+}
+
+.widget{
+  
+  border-radius: 20px!important;
 }
 
 .sceneCard{

@@ -1,21 +1,35 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
-      <ion-header>
-        <ion-toolbar>
+      <ion-header mode="ios">
+        <ion-toolbar  mode="ios" mode="ios" class="first-toolbar" color="primary">
           <ion-title>Menu</ion-title>
         </ion-toolbar>
+        <ion-toolbar class="second-toolbar" color="primary" mode="ios">
+            <ion-grid>
+                  <ion-row>
+                    <ion-col col-12 class="ion-text-center">
+                      <p>No widgets added yet</p>
+                    </ion-col>
+                  </ion-row>
+            </ion-grid>
+          </ion-toolbar>
       </ion-header>
-      <ion-content>
-        <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
-              <ion-label>
-                {{p.title}}
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
+      <ion-content color="light">
+        <ion-list class="grid-content ion-no-padding">
+            <ion-card  color="tint" class="homeCard ion-no-margin" mode="ios">
+              <ion-card-content>
+                  <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+                      <ion-item color="light" [routerDirection]="'root'" [routerLink]="[p.url]">
+                        <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                        <ion-label>
+                          {{p.title}}
+                        </ion-label>
+                      </ion-item>
+                    </ion-menu-toggle>
+              </ion-card-content>
+            </ion-card>
+
         </ion-list>
       </ion-content>
     </ion-menu>

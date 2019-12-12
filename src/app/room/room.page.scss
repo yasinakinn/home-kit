@@ -26,6 +26,13 @@
       top: 1rem;
       font-size: 20px;
   }
+
+  .more{
+    position: absolute;
+      right: 0;
+      top: 1rem;
+      font-size: 20px!important;
+  }
   
   ion-header{
     position: absolute;
@@ -36,7 +43,7 @@
     z-index: 999;
     display: block;
     position: relative;
-    margin-top: 60%;
+    transform: translateY(190px);
     background: #fff;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;

@@ -1,10 +1,9 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { AddRoomPage } from '../add-room/add-room.page';
 import { RoomPage } from '../room/room.page';
+import { ControllerService } from '../services/controller.service';
 
 @Injectable()
 @Component({
@@ -13,18 +12,16 @@ import { RoomPage } from '../room/room.page';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-
-  temperatureOutside;
-  descriptions;
-  humidityOutside;
-  weatherImg;
+  isWidgetEmpty;
+  widgets = [];
+  widgetValue:any="~";
 
   scenes;
   rooms =[];
   devicesLength;
   isEmpty: boolean;
   scenesSlideOpts = {
-    slidesPerView: 4,
+    slidesPerView: 2,
     spaceBetween: 0,
     speed: 400
   };
@@ -34,11 +31,12 @@ export class HomePage implements OnInit {
     speed: 400,
   };
   constructor(
-    private geolocation: Geolocation,
-    public httpClient: HttpClient,
     private storage: Storage,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public controller: ControllerService,
+    public alertCtrl:AlertController
   ) {
+    this.isWidgetEmpty = true;
     this.scenes = [
       {
         icon: "home",
@@ -58,99 +56,66 @@ export class HomePage implements OnInit {
       },
     ];
     if (window.screen.width <= 360) {
-      this.scenesSlideOpts = {
-        slidesPerView: 2,
-        spaceBetween: 0,
-        speed: 400
-      };
       this.roomsSlideOpts = {
         slidesPerView: 1,
         spaceBetween: 0,
         speed: 400,
       };
     }
-
-    this.humidityOutside = "~";
-    this.temperatureOutside ="~";
-    this.weatherImg = "/assets/sun.svg"
   }
 
   ngOnInit(){
-    this.getWeather();
+    this.controller.MQTT().connect({ onSuccess: this.getWidgets.bind(this), onFailure: this.controller.onFail.bind(this) })
     this.getRooms();
   }
 
-
-  getWeather(){
-    this.geolocation.getCurrentPosition().then((data) => {
-      let url = "http://api.weatherstack.com/current?access_key=3ff6d77fb5981d97702375812e7ab5b9&query=" + data.coords.latitude + "," + data.coords.longitude
-      this.httpClient.get(url).subscribe((resa) => {
-        console.log(resa);
-        
-        this.temperatureOutside = resa["current"].temperature;
-        this.humidityOutside = resa["current"].humidity;
-        this.descriptions = resa["current"].weather_descriptions[0];
-        let iconClass;
-        switch (this.descriptions) {
-	
-          case 'Partly Cloudy':
-          iconClass = 'partly_cloudy';
-          break;
-          
-          case 'Haze':
-          case 'Overcast':
-          iconClass = 'full_clouds';
-          break;
-          
-          case 'Clear':
-          iconClass = 'night';
-          break;
-          
-          case 'Patchy Light Drizzle':
-          iconClass = 'sun_rain_clouds';
-          break;
-          
-          case 'Sunny':
-          iconClass = 'full_sun';
-          break;
-          
-          case 'Patchy Rain Possible':
-          iconClass = 'cloud_slight_rain';
-          break;
-          
-          case 'Light Rain':
-          case 'Light Rain, Mist':
-          iconClass = 'cloud_slight_rain';
-          break;
-          
-          case 'Moderate Or Heavy Rain Shower':
-          iconClass = 'rainy';
-          break;
-          
-          case 'Thunder':
-          iconClass = 'thunder';
-          break;
-          
-          default: 
-          iconClass = 'full_clouds';
-          break;	
-        
-          // some may be missing 
-          
-        };
-        this.weatherImg = "https://weatherstack.com/site_images/weather_icon_"+iconClass+".svg"
+getWidgets(){
+  this.storage.get("widgets").then((val)=>{
+    if (val && val.length > 0) {
+      this.isWidgetEmpty = false;
+      this.widgets = val;
+      console.log(this.widgets);
+      
+      this.widgets.forEach(element => {
+        this.controller.client.subscribe(element.value,0)
+        this.controller.client.onMessageArrived = this.widgetMessageArrived.bind(this);
       });
-    });    
+    }else{
+      this.isWidgetEmpty = true;
+    }
+  })
+}
 
-  }
+widgetMessageArrived(message){
+  let element = this.widgets.find(element => element.value === message.destinationName)
+  let prefix = '';
+  let postfix = '';
+  let precision = 2;
+  if (element.prefix) prefix = element.prefix; 
+  if (element.postfix) postfix = element.postfix; 
+  if (element.precision) precision = element.precision; 
+  document.getElementById(message.destinationName).innerHTML = prefix +  parseFloat(message.payloadString).toFixed(precision) + postfix;
+}
 
   getRooms(){
-    this.storage.length().then((res) => {
-      if (res > 0) {
+    if (window.screen.width <= 360) {
+      this.roomsSlideOpts = {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        speed: 400,
+      };
+    }
+    if (window.screen.width >= 768) {
+      this.scenesSlideOpts = {
+        slidesPerView: 4,
+        spaceBetween: 0,
+        speed: 400
+      };
+    }
+    this.storage.get("rooms").then((res) => {
+      if (res.length > 0 && res) {
         this.isEmpty = true;
-        this.storage.get("rooms").then((val) => {
-          this.rooms = val;
-        });
+        this.rooms = res;
         if (this.rooms.length == 1) {
           this.roomsSlideOpts = {
             slidesPerView: 1,
@@ -177,7 +142,6 @@ export class HomePage implements OnInit {
   }
 
   async openRoom(id) {
-    console.log();
     const modal = await this.modalCtrl.create({
       component: RoomPage,
       componentProps: {
@@ -186,8 +150,45 @@ export class HomePage implements OnInit {
       mode:"ios"
     });
     modal.onDidDismiss().then(()=>{
+      this.getWidgets();
     this.getRooms();      
     })
     return await modal.present();
   }
+
+  async presentAlertConfirm(widget) {
+    console.log(widget);
+    
+    const alert = await this.alertCtrl.create({
+      header: 'Confirm',
+      message: 'Do you want to delete this widget?',
+      mode:"ios",
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            this.widgets.forEach((element,i) => {
+              if (element.id == widget.id) {
+                this.widgets.splice(i, 1 );
+              }
+            });
+            console.log(this.widgets);
+            this.storage.set("widgets", this.widgets);
+          }
+        }
+      ]
+    });
+    alert.onDidDismiss().then(()=>{
+      this.getWidgets();    
+    })
+    await alert.present();
+  }
+
 }

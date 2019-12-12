@@ -1,5 +1,10 @@
 <ion-header>
   <ion-toolbar class="first-toolbar" color="primary" mode="ios">
+      <ion-buttons slot="start">
+          <ion-button (click)="delete()">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </ion-buttons>
     <ion-title>{{room.name}}</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="dismiss()">
@@ -9,33 +14,26 @@
   </ion-toolbar>
   <ion-toolbar class="second-toolbar" color="primary" mode="ios">
     <ion-grid>
-      <ion-row>
-        <ion-col col-12>
-          <ion-card color="tertiary" class="usageCard" mode="ios">
-            <ion-row *ngIf="isSensorsEmpty">
-              <ion-col col-6>
-                <ion-item lines="none" color="shade">
-                  <ion-icon name="outlet" slot="start"></ion-icon>
-                  <ion-label>
-                    Icon Start
-                    <p>asd</p>
-                  </ion-label>
-                </ion-item>
-              </ion-col>
-              <ion-col col-6>
-                <ion-item lines="none" color="shade">
-                  <ion-icon name="flash" slot="start"></ion-icon>
-                  <ion-label>
-                    Icon Start
-                    <p>asd</p>
-                  </ion-label>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-            <ion-card-content *ngIf="!isSensorsEmpty">
-                <p>asdas</p>
-              </ion-card-content>
-          </ion-card>
+      <ion-row class="ion-align-items-center negative-margin">
+        <ion-col class="ion-text-center" col-4>
+          <img src="{{weatherImg}}" alt="">
+        </ion-col>
+        <ion-col class="ion-text-center" col-4>
+          <p text-medium class="ion-no-margin">{{temperatureOutside}}°ᶜ</p>
+        </ion-col>
+        <ion-col class="ion-text-center" col-4>
+          <p text-medium class="ion-no-margin">{{humidityOutside}}%</p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="negative-margin">
+        <ion-col class="ion-text-center" col-4>
+          <p text-small class="ion-no-margin">{{descriptions}}</p>
+        </ion-col>
+        <ion-col class="ion-text-center" col-4>
+          <p text-small class="ion-no-margin">Temp Outside</p>
+        </ion-col>
+        <ion-col class="ion-text-center" col-4>
+          <p text-small class="ion-no-margin">Humidity Outside</p>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -55,23 +53,27 @@
         </ion-card-header>
 
         <ion-row class="ion-align-items-stretch" *ngIf="isDevicesEmpty">
-          <ion-col size="6" size-sm size-md size-lg size-xl *ngFor="let device  of  devices" (click)="presentAlertPrompt(device)">
-              <ion-card mode="ios" class="deviceCard ion-activatable ion-no-margin">
+          <ion-col size="6" size-sm size-md size-lg size-xl *ngFor="let device  of  devices" >
+              <ion-card mode="ios" class="deviceCard ion-no-margin">
                   <ion-card-content>
                     <ion-card-header mode="md">
                         <ion-icon name="{{device.deviceImage}}"></ion-icon>
                       <ion-card-title mode="md">{{device.deviceName}}</ion-card-title>
-                      <ion-toggle *ngIf="device.deviceType == 'switch'" [(ngModel)]="device[deviceId]" (ionChange)="toggleChange(device[deviceId],device)"></ion-toggle>
-                      <ion-card-subtitle *ngIf="device.deviceType == 'text'" id="{{device.deviceTopic}}">Accessing</ion-card-subtitle>
+                      <div class=" ion-activatable">
+                        <ion-icon name="more" class="more" (click)="presentAlertPrompt(device)"></ion-icon>
+                        <ion-ripple-effect></ion-ripple-effect>
+                      </div>
+                      <ion-toggle checked="{{device.deviceId}}" *ngIf="device.deviceType == 'switch'"  (ionChange)="toggleChange($event.detail.checked,device)"></ion-toggle>
+                      <ion-card-subtitle *ngIf="device.deviceType == 'text'" id="{{device.deviceTopic}}0">Accessing</ion-card-subtitle>
+                      <ion-card-subtitle *ngIf="device.deviceType == 'sensor'" id="{{device.deviceTopic}}1">Accessing</ion-card-subtitle>
                     </ion-card-header>
                   </ion-card-content>
-                  <ion-ripple-effect></ion-ripple-effect>
                 </ion-card>
           </ion-col>
         </ion-row>
 
         <ion-card-content *ngIf="!isDevicesEmpty">
-          <p class="noDevices">asdas</p>
+          <p class="noDevices">No device added yet</p>
         </ion-card-content>
       </ion-card>
     </ion-grid>

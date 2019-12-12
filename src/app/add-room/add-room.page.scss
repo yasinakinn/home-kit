@@ -1,0 +1,19 @@
+ion-header .first-toolbar{
+    padding-top: 36px;
+    padding-bottom: 72px;
+  }
+
+  ion-header{
+    position: absolute;
+    z-index: 1;
+  }
+  
+.grid-content{
+    z-index: 999;
+    display: block;
+    position: relative;
+    transform: translateY(110px);
+    background: #fff;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+  }

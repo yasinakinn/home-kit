@@ -1,5 +1,5 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header mode="ios">
+  <ion-toolbar mode="ios" mode="ios" class="first-toolbar" color="primary">
     <ion-title>Add Device</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="dismiss()">
@@ -9,45 +9,56 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-item>
-    <ion-label position="stacked">Device Name</ion-label>
-    <ion-input required="true" placeholder="Please enter your device name" name="text" [(ngModel)]="deviceName">
-    </ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="stacked">Topic</ion-label>
-    <ion-input required="true" placeholder="Please enter topic" name="text" [(ngModel)]="topic"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Type</ion-label>
-    <ion-select placeholder="Please select type" [(ngModel)]="deviceType" okText="Okay" cancelText="Dismiss"
-      interface="popover" (ionChange)="typeChange($event)">
-      <ion-select-option value="text">Text</ion-select-option>
-      <ion-select-option value="switch">Switch</ion-select-option>
-      <ion-select-option value="sensor">Sensor</ion-select-option>
-    </ion-select>
-  </ion-item>
-  <ion-item *ngIf="isSwitch">
-    <ion-label position="stacked">On Event</ion-label>
-    <ion-input required="true" placeholder="Please enter on event" name="text" [(ngModel)]="onEvent"></ion-input>
-  </ion-item>
-  <ion-item *ngIf="isSwitch">
-    <ion-label position="stacked">Off Event</ion-label>
-    <ion-input required="true" placeholder="Please enter off Event" name="text" [(ngModel)]="offEvent"></ion-input>
-  </ion-item>
-  <ion-item *ngIf="isSensor">
-    <ion-label position="stacked">Postfix</ion-label>
-    <ion-input required="true" placeholder="Please enter off Event" name="text" [(ngModel)]="postfix"></ion-input>
-  </ion-item>
-  <ion-item *ngIf="isSensor">
-    <ion-label position="stacked">Prefix</ion-label>
-    <ion-input required="true" placeholder="Please enter prefix value" name="text" [(ngModel)]="prefix"></ion-input>
-  </ion-item>
-  <ion-item *ngIf="isSensor">
-    <ion-label position="stacked">Precision</ion-label>
-    <ion-input required="true" placeholder="Please enter precision value" name="number" [(ngModel)]="precision">
-    </ion-input>
-  </ion-item>
-  <ion-button shape="round" expand="block" (click)="addDevice()">Add</ion-button>
+<ion-content color="light">
+    <ion-list  class="grid-content ion-no-padding">
+        <ion-card  color="tint" class="homeCard ion-no-margin" mode="ios">
+            <ion-card-content>
+                <ion-item color="light">
+                    <ion-label position="stacked">Device Name</ion-label>
+                    <ion-input required="true" placeholder="Please enter your device name" name="text" [(ngModel)]="deviceName">
+                    </ion-input>
+                  </ion-item>
+                  <ion-item color="light">
+                    <ion-label position="stacked">Topic</ion-label>
+                    <ion-input required="true" placeholder="Please enter topic" name="text" [(ngModel)]="topic"></ion-input>
+                  </ion-item >
+                  <ion-item color="light">
+                    <ion-label>Type</ion-label>
+                    <ion-select mode="ios" placeholder="Please select type" [(ngModel)]="deviceType" okText="Okay" cancelText="Dismiss"
+                      interface="popover" (ionChange)="typeChange($event)">
+                      <ion-select-option value="text">Text</ion-select-option>
+                      <ion-select-option value="switch">Switch</ion-select-option>
+                      <ion-select-option value="sensor">Sensor</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                  <ion-item color="light" *ngIf="isText">
+                      <ion-label>Add to widget</ion-label>
+                      <ion-toggle [(ngModel)]="isWidget"></ion-toggle>
+                    </ion-item>
+                  <ion-item color="light" *ngIf="isSwitch">
+                    <ion-label position="stacked">On Event</ion-label>
+                    <ion-input required="true" placeholder="Please enter on event" name="text" [(ngModel)]="onEvent"></ion-input>
+                  </ion-item>
+                  <ion-item color="light" *ngIf="isSwitch">
+                    <ion-label position="stacked">Off Event</ion-label>
+                    <ion-input required="true" placeholder="Please enter off Event" name="text" [(ngModel)]="offEvent"></ion-input>
+                  </ion-item>
+                  <ion-item color="light" *ngIf="isSensor">
+                    <ion-label position="stacked">Postfix</ion-label>
+                    <ion-input required="true" placeholder="Please enter off Event" name="text" [(ngModel)]="postfix"></ion-input>
+                  </ion-item>
+                  <ion-item color="light" *ngIf="isSensor">
+                    <ion-label position="stacked">Prefix</ion-label>
+                    <ion-input required="true" placeholder="Please enter prefix value" name="text" [(ngModel)]="prefix"></ion-input>
+                  </ion-item>
+                  <ion-item color="light" *ngIf="isSensor">
+                    <ion-label position="stacked">Precision</ion-label>
+                    <ion-input required="true" placeholder="Please enter precision value" name="number" [(ngModel)]="precision">
+                    </ion-input>
+                  </ion-item>
+                  <ion-button class="ion-margin-top" shape="round" expand="block" (click)="addDevice()">Add</ion-button>
+            </ion-card-content>
+        </ion-card>
+    </ion-list>
+
 </ion-content>

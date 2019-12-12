@@ -13,7 +13,6 @@ export class ControllerService {
   message;
   public client: Paho.MQTT.Client;
   mqttCounter = 0;
-
   constructor() { }
 
 
@@ -35,8 +34,12 @@ export class ControllerService {
   }
 
   onConnected() {
-    console.log("Connected after lost");
-
+    if (this.mqttCounter > 0) {
+      console.log("Connected after lost");      
+    }else{
+      console.log("Connected first time");
+    }
+    return 0;
   }
 
   onFail() {

@@ -31,19 +31,19 @@ export class AddRoomPage implements OnInit {
   typeChange() {
     switch (this.roomType) {
       case "office":
-        this.roomImage = "/assets/img/bed.svg";
+        this.roomImage = "/assets/img/office.svg";
         break;
       case "bed":
-        this.roomImage = "/assets/img/bed.svg";
+        this.roomImage = "/assets/img/bedroom.svg";
         break;
       case "kitchen":
-        this.roomImage = "/assets/img/bed.svg";
+        this.roomImage = "/assets/img/kitchen.svg";
         break;
       case "living":
-        this.roomImage = "/assets/img/bed.svg";
+        this.roomImage = "/assets/img/living.svg";
         break;
       case "child":
-        this.roomImage = "/assets/img/bed.svg";
+        this.roomImage = "/assets/img/child.svg";
         break;
       default:
         break;

@@ -1,0 +1,22 @@
+ion-menu{
+    ion-header .first-toolbar{
+        padding-top: 36px;
+      }
+      ion-header .second-toolbar{
+        padding-bottom: 70px;
+      }
+      ion-header{
+        position: absolute;
+        z-index: 1;
+      }
+      
+      .grid-content{
+        z-index: 999;
+        display: block;
+        position: relative;
+        transform: translateY(182px);
+        background: #fff;
+        border-top-left-radius: 50px;
+        border-top-right-radius: 50px;
+      }
+}
