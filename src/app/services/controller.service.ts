@@ -5,7 +5,7 @@ import { Paho } from 'ng2-mqtt/mqttws31';
 export class ControllerService {
   mqtt;
   reconnectTimeout = 2000;
-  host = "3.123.138.65"
+  host = "test.mosquitto.org"
   port = 9001;
   mac;
   mod;
@@ -19,7 +19,7 @@ export class ControllerService {
 
   MQTT() {
     this.mqttCounter++;
-    this.client = new Paho.MQTT.Client(this.host, this.port, "smach" + Math.floor(Math.random() * 9000) + 1000);
+    this.client = new Paho.MQTT.Client(this.host, this.port, "randomName" + Math.floor(Math.random() * 9000) + 1000);
     this.client.onMessageArrived = this.onMessageArrived.bind(this);
     this.client.onConnectionLost = this.onConnectionLost.bind(this);
     return this.client;
