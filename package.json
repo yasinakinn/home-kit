@@ -71,7 +71,7 @@
     "node-forge": ">=0.10.0",
     "http-proxy": ">=1.18.1",
     "dot-prop": ">=4.2.1",
-    "karma": "~4.1.0",
+    "karma": "~6.3.14",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
