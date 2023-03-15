@@ -3,12 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { SplashScreen } from '@capacitor/splash-screen';
+import { StatusBar } from '@capacitor/status-bar';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Geolocation } from '@capacitor/geolocation';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { ListPageModule } from './list/list.module';
@@ -32,9 +32,6 @@ import { ControllerService } from './services/controller.service';
     AddDevicePageModule
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
-    Geolocation,
     ControllerService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

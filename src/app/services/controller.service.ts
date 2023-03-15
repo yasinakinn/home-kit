@@ -1,34 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Paho } from 'ng2-mqtt/mqttws31';
+import { Paho } from 'ng2-mqtt/index';
 
 @Injectable()
 export class ControllerService {
-  mqtt;
   reconnectTimeout = 2000;
   host = "test.mosquitto.org"
-  port = 9001;
+  port = 1883;
   mac;
   mod;
   out_msg;
   message;
-  public client: Paho.MQTT.Client;
+  client;
   mqttCounter = 0;
-  constructor() { }
-
-
-
-  MQTT() {
+  constructor() {
     this.mqttCounter++;
+
     this.client = new Paho.MQTT.Client(this.host, this.port, "randomName" + Math.floor(Math.random() * 9000) + 1000);
+
+    console.log(12);
     this.client.onMessageArrived = this.onMessageArrived.bind(this);
     this.client.onConnectionLost = this.onConnectionLost.bind(this);
-    return this.client;
-  }
+   }
+
 
   onConnectionLost(responseObject) {
     console.log("Connection lost, trying reconnect");
     if (this.client.isConnected() == false) {
-      this.MQTT().connect({ onSuccess: this.onConnected.bind(this), onFailure: this.onFail.bind(this) });
+      this.client.connect({ onSuccess: this.onConnected.bind(this), onFailure: this.onFail.bind(this) });
 
     }
   }
@@ -44,7 +42,7 @@ export class ControllerService {
 
   onFail() {
     if (this.client.isConnected() == false) {
-      this.MQTT().connect({ onSuccess: this.onConnected.bind(this), onFailure: this.onFail.bind(this) });
+      this.client.connect({ onSuccess: this.onConnected.bind(this), onFailure: this.onFail.bind(this) });
     }
   }
 

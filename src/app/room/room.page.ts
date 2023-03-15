@@ -3,7 +3,7 @@ import { NavParams, ModalController, AlertController } from '@ionic/angular';
 import { AddDevicePage } from '../add-device/add-device.page';
 import { Storage } from '@ionic/storage';
 import { ControllerService } from '../services/controller.service';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Geolocation } from '@capacitor/geolocation';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -53,7 +53,7 @@ export class RoomPage implements OnInit {
   }
 
   getWeather() {
-    this.geolocation.getCurrentPosition().then((data) => {
+    this.geolocation.getCurrentPosition((data) => {
       let url = "http://api.weatherstack.com/current?access_key=3ff6d77fb5981d97702375812e7ab5b9&query=" + data.coords.latitude + "," + data.coords.longitude
       this.httpClient.get(url).subscribe((resa) => {
         console.log(resa);

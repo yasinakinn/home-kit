@@ -20,7 +20,7 @@
                 <ion-item color="light">
                   <ion-label>Room Type</ion-label>
                   <ion-select placeholder="Please select room type" [(ngModel)]="roomType" okText="Okay" cancelText="Dismiss"
-                    interface="popover" mode="ios" (ionChange)="typeChange($event)">
+                    interface="popover" mode="ios" (ionChange)="typeChange()">
                     <ion-select-option mode="ios" value="office">Office</ion-select-option>
                     <ion-select-option value="bed">Bedroom</ion-select-option>
                     <ion-select-option value="kitchen">Kitchen</ion-select-option>

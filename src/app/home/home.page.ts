@@ -65,7 +65,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(){
-    this.controller.MQTT().connect({ onSuccess: this.getWidgets.bind(this), onFailure: this.controller.onFail.bind(this) })
+    this.controller.client.connect({ onSuccess: this.getWidgets.bind(this), onFailure: this.controller.onFail.bind(this) })
     this.getRooms();
   }
 

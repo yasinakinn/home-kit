@@ -65,7 +65,7 @@
         <ion-slides *ngIf="isEmpty" [options]="roomsSlideOpts">
           <ion-slide *ngFor="let room  of  rooms">
             <ion-card mode="ios" class="roomCard ion-activatable ion-text-center ion-no-margin">
-              <ion-card-content (click)="openRoom(room.id,$event)">
+              <ion-card-content (click)="openRoom(room.id)">
                 <img height="100" src="{{room.image}}" />
                 <ion-card-header mode="md">
                   <ion-card-title mode="md">{{room.name}}</ion-card-title>
